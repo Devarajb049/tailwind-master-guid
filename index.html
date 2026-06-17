@@ -1,0 +1,1804 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tailwind CSS Master Cheat Sheet & Learning Roadmap</title>
+  
+  <!-- Tailwind CSS Play CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Tailwind Configuration -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              DEFAULT: '#2563EB',
+              dark: '#1D4ED8',
+              light: '#DBEAFE',
+            },
+            secondary: {
+              dark: '#0891B2',
+              light: '#CFFAFE',
+            },
+            accent: {
+              DEFAULT: '#F97316',
+              dark: '#EA580C',
+              light: '#FFEDD5',
+            },
+            darkBg: '#0F172A',
+            darkCard: '#1E293B',
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Space Grotesk', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts & Custom CSS -->
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+    
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .heading-font {
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    /* Code block wrappers with copy buttons */
+    .code-wrapper {
+      position: relative;
+      margin-top: 1rem;
+    }
+    
+    .code-wrapper pre {
+      background: #0F172A;
+      color: #E2E8F0;
+      padding: 1.25rem;
+      border-radius: 1rem;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.825rem;
+      line-height: 1.6;
+      border: 1px solid #334155;
+    }
+
+    .dark .code-wrapper pre {
+      border-color: #1E293B;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: #1E2937;
+      color: #94A3B8;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      transition: all 0.2s;
+      opacity: 0;
+      z-index: 10;
+    }
+    
+    .code-wrapper:hover .copy-btn {
+      opacity: 1;
+    }
+    
+    .copy-btn:hover {
+      background: #334155;
+      color: white;
+    }
+    
+    .copy-btn.copied {
+      background: #10B981 !important;
+      color: white !important;
+    }
+
+    /* Smooth transitions */
+    .card-hover {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .card-hover:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 20px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    }
+
+    .nav-link {
+      position: relative;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -4px;
+      left: 0;
+      background-color: #2563EB;
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    /* Custom scrollbar styling */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #CBD5E1;
+      border-radius: 4px;
+    }
+    .dark ::-webkit-scrollbar-thumb {
+      background: #475569;
+    }
+
+    /* Print settings */
+    @media print {
+      .no-print {
+        display: none !important;
+      }
+      body {
+        background: white !important;
+        color: black !important;
+      }
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-[#0f172a] dark:bg-darkBg dark:text-slate-100 transition-colors duration-300 min-h-screen flex flex-col">
+
+  <!-- NAVBAR -->
+  <nav class="bg-white dark:bg-darkCard border-b border-slate-200 dark:border-slate-800 sticky top-0 z-50 transition-colors duration-300 no-print">
+    <!-- Scrolling Progress Bar -->
+    <div id="scrollProgress" class="h-1 bg-gradient-to-r from-primary via-secondary to-accent w-0 transition-all duration-100"></div>
+
+    <div class="max-w-screen-2xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-x-3">
+        <!-- Mobile Sidebar Toggle -->
+        <button id="mobileMenuBtn" class="lg:hidden p-2 text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+          <i class="fa-solid fa-bars text-xl"></i>
+        </button>
+        <div class="w-9 h-9 bg-primary rounded-2xl flex items-center justify-center text-white font-bold text-2xl heading-font pt-0.5">T</div>
+        <div class="hidden md:block">
+          <span class="font-semibold text-2xl tracking-tighter heading-font">Tailwind</span>
+          <span class="text-slate-400 dark:text-slate-600 dark:text-slate-400 text-xl font-medium heading-font">Master</span>
+        </div>
+      </div>
+      
+      <!-- Desktop Menu Links -->
+      <div class="hidden lg:flex items-center gap-x-8 text-sm font-semibold">
+        <a href="#sec-roadmap" class="nav-link text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white transition-colors">Roadmap</a>
+        <a href="#sec-colors" class="nav-link text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white transition-colors">Colors</a>
+        <a href="#sec-library" class="nav-link text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white transition-colors">Components</a>
+        <a href="#sec-cheatsheet" class="nav-link text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white transition-colors">Cheatsheet</a>
+      </div>
+
+      <!-- Search & Theme Toggler -->
+      <div class="flex items-center gap-x-4 flex-1 max-w-sm sm:flex-initial">
+        <div class="relative w-full">
+          <input id="searchInput" 
+                 type="text" 
+                 placeholder="Search topics, elements, utility classes..."
+                 class="w-full bg-slate-50 border border-slate-300 dark:border-slate-700 dark:bg-slate-900 focus:border-primary rounded-full py-2.5 px-5 pl-12 text-sm focus:outline-none transition-colors duration-200">
+          <i class="fa-solid fa-magnifying-glass absolute left-5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+        </div>
+        <button id="themeToggleBtn" 
+                class="w-10 h-10 flex items-center justify-center rounded-2xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400">
+          <i id="themeIcon" class="fa-solid fa-moon text-lg dark:hidden"></i>
+          <i id="themeIconDark" class="fa-solid fa-sun text-lg hidden dark:block"></i>
+        </button>
+        <button onclick="window.print()" 
+                class="hidden md:flex items-center justify-center bg-primary hover:bg-primary-dark text-white w-10 h-10 rounded-2xl shadow-md shadow-primary/20 hover:shadow-primary/30 transition-all"
+                title="Print Guide">
+          <i class="fa-solid fa-print text-base"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Sidebar Overlay drawer (Mobile) -->
+  <div id="sidebarOverlay" class="fixed inset-0 z-40 bg-slate-900/60 backdrop-blur-sm hidden lg:hidden transition-opacity duration-300 no-print"></div>
+
+  <!-- MAIN BODY LAYOUT -->
+  <div class="flex-1 max-w-screen-2xl mx-auto w-full px-6 py-6 flex gap-8 items-start relative">
+    
+        <!-- Left Navigation Sidebar -->
+    <aside id="sidebar" class="w-72 flex-shrink-0 bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 rounded-3xl p-5 no-print z-50 transition-transform duration-300 overflow-y-auto max-h-[calc(100vh-8rem)]
+      fixed inset-y-16 left-0 transform -translate-x-full lg:translate-x-0 lg:sticky lg:top-24 lg:block shadow-lg lg:shadow-none">
+
+      <!-- Navigation Checklist Links -->
+      <nav class="space-y-6">
+        <!-- Phase 1 -->
+        <div>
+          <h4 class="text-xs font-bold text-slate-600 dark:text-slate-400 dark:text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5"><i class="fa-solid fa-cubes text-primary"></i> Phase 1: Fundamentals</h4>
+          <ul class="space-y-1 text-sm">
+            <li>
+              <a href="#sec-hero" class="block px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 truncate font-semibold transition-colors">1. Welcome Hero</a>
+            </li>
+            <li>
+              <a href="#sec-roadmap" class="block px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 truncate font-semibold transition-colors">2. Learning Roadmap</a>
+            </li>
+            <li>
+              <a href="#sec-colors" class="block px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 truncate font-semibold transition-colors">3. Colors Section</a>
+            </li>
+            <li>
+              <a href="#sec-typography" class="block px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 truncate font-semibold transition-colors">4. Typography</a>
+            </li>
+            <li>
+              <a href="#sec-spacing" class="block px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 truncate font-semibold transition-colors">5. Spacing</a>
+            </li>
+            <li>
+              <a href="#sec-sizing" class="block px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 truncate font-semibold transition-colors">6. Width &amp; Height</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Phase 2 -->
+        <div>
+          <h4 class="text-xs font-bold text-slate-600 dark:text-slate-400 dark:text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5"><i class="fa-solid fa-layer-group text-secondary"></i> Phase 2: Layout</h4>
+          <ul class="space-y-1 text-sm">
+            <li>
+              <a href="#sec-borders" class="block px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 truncate font-semibold transition-colors">7. Borders</a>
+            </li>
+            <li>
+              <a href="#sec-display" class="block px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 truncate font-semibold transition-colors">8. Display</a>
+            </li>
+            <li>
+              <a href="#sec-flexbox" class="block px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 truncate font-semibold transition-colors">9. Flexbox Demo</a>
+            </li>
+            <li>
+              <a href="#sec-grid" class="block px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 truncate font-semibold transition-colors">10. Grid Section</a>
+            </li>
+            <li>
+              <a href="#sec-position" class="block px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 truncate font-semibold transition-colors">11. Positioning</a>
+            </li>
+            <li>
+              <a href="#sec-boxmodel" class="block px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 truncate font-semibold transition-colors">12. Box Model</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Phase 3 -->
+        <div>
+          <h4 class="text-xs font-bold text-slate-600 dark:text-slate-400 dark:text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5"><i class="fa-solid fa-paintbrush text-accent"></i> Phase 3: Styling</h4>
+          <ul class="space-y-1 text-sm">
+            <li>
+              <a href="#sec-effects" class="block px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 truncate font-semibold transition-colors">13. Effects &amp; Shadows</a>
+            </li>
+            <li>
+              <a href="#sec-transform" class="block px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 truncate font-semibold transition-colors">14. Transforms</a>
+            </li>
+            <li>
+              <a href="#sec-transition" class="block px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 truncate font-semibold transition-colors">15. Transitions</a>
+            </li>
+            <li>
+              <a href="#sec-animation" class="block px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 truncate font-semibold transition-colors">16. Animations</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Phase 4 -->
+        <div>
+          <h4 class="text-xs font-bold text-slate-600 dark:text-slate-400 dark:text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5"><i class="fa-solid fa-bolt text-[#EAB308]"></i> Phase 4: Interactivity</h4>
+          <ul class="space-y-1 text-sm">
+            <li>
+              <a href="#sec-responsive" class="block px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 truncate font-semibold transition-colors">17. Responsive Design</a>
+            </li>
+            <li>
+              <a href="#sec-states" class="block px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 truncate font-semibold transition-colors">18. States &amp; Focus</a>
+            </li>
+            <li>
+              <a href="#sec-pseudo" class="block px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 truncate font-semibold transition-colors">19. Pseudo Classes</a>
+            </li>
+            <li>
+              <a href="#sec-layout-utils" class="block px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 truncate font-semibold transition-colors">20. Layout Utilities</a>
+            </li>
+            <li>
+              <a href="#sec-tables" class="block px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 truncate font-semibold transition-colors">21. Tables</a>
+            </li>
+            <li>
+              <a href="#sec-lists" class="block px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 truncate font-semibold transition-colors">22. Lists</a>
+            </li>
+            <li>
+              <a href="#sec-svg" class="block px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 truncate font-semibold transition-colors">23. SVG Styles</a>
+            </li>
+            <li>
+              <a href="#sec-interactivity" class="block px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 truncate font-semibold transition-colors">24. Interactivity</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Phase 5 -->
+        <div>
+          <h4 class="text-xs font-bold text-slate-600 dark:text-slate-400 dark:text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5"><i class="fa-solid fa-graduation-cap text-indigo-500"></i> Phase 5: Advanced</h4>
+          <ul class="space-y-1 text-sm">
+            <li>
+              <a href="#sec-darkmode" class="block px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 truncate font-semibold transition-colors">25. Dark Mode Logic</a>
+            </li>
+            <li>
+              <a href="#sec-customization" class="block px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 truncate font-semibold transition-colors">26. Customization</a>
+            </li>
+            <li>
+              <a href="#sec-plugins" class="block px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 truncate font-semibold transition-colors">27. Official Plugins</a>
+            </li>
+            <li>
+              <a href="#sec-library" class="block px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 truncate font-semibold transition-colors">28. Components Library</a>
+            </li>
+            <li>
+              <a href="#sec-advanced-concepts" class="block px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 truncate font-semibold transition-colors">29. Advanced Concepts</a>
+            </li>
+            <li>
+              <a href="#sec-cheatsheet" class="block px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 truncate font-semibold transition-colors">30. Quick Cheat Sheet</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- MAIN SECTIONS AREA -->
+    <main class="flex-1 lg:max-w-[calc(100%-20rem)] space-y-12 w-full">
+      
+      <!-- Section 1: Hero Section -->
+      <section id="sec-hero" class="doc-section scroll-mt-24">
+        <div class="hero-bg text-white rounded-3xl p-8 sm:p-12 relative overflow-hidden shadow-2xl border border-slate-800">
+          <div class="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
+          <div class="relative z-10 max-w-3xl space-y-6">
+            <div class="inline-flex items-center gap-x-2 bg-white/10 backdrop-blur-md text-white text-xs font-semibold px-4 py-2 rounded-full border border-white/15">
+              <div class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+              INTERACTIVE COMPREHENSIVE ROADMAP
+            </div>
+            
+            <h1 class="text-5xl sm:text-6xl font-extrabold leading-none tracking-tighter heading-font">
+              Tailwind CSS<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-[#38bdf8]">Master Guide &amp; Cheat Sheet</span>
+            </h1>
+            <p class="text-lg text-slate-300 max-w-xl">
+              An all-in-one interactive playground and document layout designed to help developers go from basic style definitions to production-ready Tailwind designs.
+            </p>
+            
+            <div class="flex flex-wrap gap-4">
+              <a href="#sec-roadmap" class="inline-flex items-center gap-x-3 bg-white text-slate-900 hover:bg-slate-100 font-bold px-6 py-3.5 rounded-full text-sm transition-all active:scale-95 shadow-lg shadow-white/5">
+                <i class="fa-solid fa-rocket"></i>
+                Start Learning
+              </a>
+              <a href="#sec-cheatsheet" class="inline-flex items-center gap-x-3 border border-white/30 hover:bg-white/10 text-white font-medium px-6 py-3.5 rounded-full text-sm transition-all">
+                <i class="fa-solid fa-table"></i>
+                Ultimate Cheat Sheet
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: Learning Roadmap -->
+      <section id="sec-roadmap" class="doc-section scroll-mt-24 bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm overflow-hidden">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <h2 class="font-display font-bold text-2xl flex items-center gap-3"><i class="fa-solid fa-route text-primary"></i> 2. Learning Roadmap</h2>
+          <button class="toggle-section-btn text-slate-400 hover:text-slate-600"><i class="fa-solid fa-chevron-up text-lg"></i></button>
+        </div>
+        <div class="section-content p-6 space-y-6">
+          <p class="text-sm text-slate-600 dark:text-slate-400">A structured learning path for mastering utility-first styling workflows.</p>
+          <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+            <!-- Phase 1 -->
+            <a href="#sec-colors" class="p-4 border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 rounded-2xl hover:border-primary transition-all duration-200 group">
+              <span class="block text-xs font-bold text-slate-400 mb-1">PHASE 1</span>
+              <span class="block font-bold text-slate-800 dark:text-slate-100 group-hover:text-primary">Fundamentals</span>
+              <span class="block text-[11px] text-slate-400 mt-2">Colors, Typography, Spacing &amp; Sizes</span>
+            </a>
+            <!-- Phase 2 -->
+            <a href="#sec-borders" class="p-4 border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 rounded-2xl hover:border-secondary transition-all duration-200 group">
+              <span class="block text-xs font-bold text-slate-400 mb-1">PHASE 2</span>
+              <span class="block font-bold text-slate-800 dark:text-slate-100 group-hover:text-secondary">Layout</span>
+              <span class="block text-[11px] text-slate-400 mt-2">Flexbox, Grid, Position &amp; Borders</span>
+            </a>
+            <!-- Phase 3 -->
+            <a href="#sec-effects" class="p-4 border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 rounded-2xl hover:border-accent transition-all duration-200 group">
+              <span class="block text-xs font-bold text-slate-400 mb-1">PHASE 3</span>
+              <span class="block font-bold text-slate-800 dark:text-slate-100 group-hover:text-accent">Styling</span>
+              <span class="block text-[11px] text-slate-400 mt-2">Effects, Transitions &amp; Animations</span>
+            </a>
+            <!-- Phase 4 -->
+            <a href="#sec-responsive" class="p-4 border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 rounded-2xl hover:border-[#EAB308] transition-all duration-200 group">
+              <span class="block text-xs font-bold text-slate-400 mb-1">PHASE 4</span>
+              <span class="block font-bold text-slate-800 dark:text-slate-100 group-hover:text-[#EAB308]">Interactivity</span>
+              <span class="block text-[11px] text-slate-400 mt-2">Responsive breakpoints &amp; States</span>
+            </a>
+            <!-- Phase 5 -->
+            <a href="#sec-darkmode" class="p-4 border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 rounded-2xl hover:border-indigo-500 transition-all duration-200 group">
+              <span class="block text-xs font-bold text-slate-400 mb-1">PHASE 5</span>
+              <span class="block font-bold text-slate-800 dark:text-slate-100 group-hover:text-indigo-500">Advanced</span>
+              <span class="block text-[11px] text-slate-400 mt-2">Dark Mode, Config files &amp; Components</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 3: Colors Section -->
+      <section id="sec-colors" class="doc-section scroll-mt-24 bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm overflow-hidden">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <h2 class="font-display font-bold text-2xl flex items-center gap-3"><i class="fa-solid fa-palette text-primary"></i> 3. Colors Section</h2>
+          <button class="toggle-section-btn text-slate-400 hover:text-slate-600"><i class="fa-solid fa-chevron-up text-lg"></i></button>
+        </div>
+        <div class="section-content p-6 space-y-6">
+          <p class="text-sm text-slate-600 dark:text-slate-400">Tailwind includes predefined color swatches covering typography, backgrounds, and borders.</p>
+          
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div class="p-4 bg-red-500 text-white rounded-2xl text-center text-xs font-bold shadow-sm">bg-red-500</div>
+            <div class="p-4 bg-blue-500 text-white rounded-2xl text-center text-xs font-bold shadow-sm">bg-blue-500</div>
+            <div class="p-4 bg-emerald-500 text-white rounded-2xl text-center text-xs font-bold shadow-sm">bg-emerald-500</div>
+            <div class="p-4 bg-amber-500 text-white rounded-2xl text-center text-xs font-bold shadow-sm">bg-amber-500</div>
+          </div>
+
+          <div class="code-wrapper">
+            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-solid fa-copy"></i> Copy</button>
+            <pre><code>&lt;!-- Color styling --&gt;
+&lt;div class="text-red-500 bg-emerald-100 border border-emerald-500/20 px-4 py-2"&gt;
+  Interactive Colored Element
+&lt;/div&gt;</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 4: Typography Section -->
+      <section id="sec-typography" class="doc-section scroll-mt-24 bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm overflow-hidden">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <h2 class="font-display font-bold text-2xl flex items-center gap-3"><i class="fa-solid fa-font text-primary"></i> 4. Typography</h2>
+          <button class="toggle-section-btn text-slate-400 hover:text-slate-600"><i class="fa-solid fa-chevron-up text-lg"></i></button>
+        </div>
+        <div class="section-content p-6 space-y-6">
+          <p class="text-sm text-slate-600 dark:text-slate-400">Tailwind typography helpers handle sizing, font weight, line spacing, alignments, and text decorations.</p>
+          
+          <div class="space-y-4 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl bg-slate-50 dark:bg-slate-900/50">
+            <div>
+              <span class="block text-xs font-mono text-slate-400 mb-1">text-xs (0.75rem)</span>
+              <p class="text-xs">Quick brown fox jumps.</p>
+            </div>
+            <div>
+              <span class="block text-xs font-mono text-slate-400 mb-1">text-sm (0.875rem)</span>
+              <p class="text-sm">Quick brown fox jumps.</p>
+            </div>
+            <div>
+              <span class="block text-xs font-mono text-slate-400 mb-1">text-lg font-semibold (1.125rem)</span>
+              <p class="text-lg font-semibold">Quick brown fox jumps.</p>
+            </div>
+            <div>
+              <span class="block text-xs font-mono text-slate-400 mb-1">text-2xl font-bold uppercase (1.5rem)</span>
+              <p class="text-2xl font-bold uppercase">Quick brown fox jumps.</p>
+            </div>
+          </div>
+
+          <div class="code-wrapper">
+            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-solid fa-copy"></i> Copy</button>
+            <pre><code>&lt;!-- Typography Examples --&gt;
+&lt;h1 class="text-2xl font-bold uppercase underline tracking-wide"&gt;Heading&lt;/h1&gt;
+&lt;p class="text-sm font-semibold leading-relaxed text-slate-600 dark:text-slate-400"&gt;Subheading text.&lt;/p&gt;</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 5: Spacing Section -->
+      <section id="sec-spacing" class="doc-section scroll-mt-24 bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm overflow-hidden">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <h2 class="font-display font-bold text-2xl flex items-center gap-3"><i class="fa-solid fa-arrows-left-right text-primary"></i> 5. Spacing</h2>
+          <button class="toggle-section-btn text-slate-400 hover:text-slate-600"><i class="fa-solid fa-chevron-up text-lg"></i></button>
+        </div>
+        <div class="section-content p-6 space-y-6">
+          <p class="text-sm text-slate-600 dark:text-slate-400">Control outer spacing margin (<code class="font-mono">m-</code>) and inner spacing padding (<code class="font-mono">p-</code>) values starting at 0 up to 96 (and beyond).</p>
+          
+          <!-- Visual diagram -->
+          <div class="flex justify-center items-center p-6 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl">
+            <div class="w-full max-w-md bg-accent/15 border border-accent border-dashed p-6 rounded-2xl text-center relative">
+              <span class="absolute top-2 left-3 text-[9px] font-bold text-accent">Margin Area</span>
+              
+              <div class="bg-primary/15 border border-primary border-dashed p-6 rounded-xl text-center relative">
+                <span class="absolute top-2 left-3 text-[9px] font-bold text-primary">Padding Area (p-6)</span>
+                
+                <div class="bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 py-3 rounded-lg shadow-sm text-xs font-semibold">
+                  Content Box
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="code-wrapper">
+            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-solid fa-copy"></i> Copy</button>
+            <pre><code>&lt;!-- Spacing properties --&gt;
+&lt;div class="m-4 p-6 mx-auto my-2"&gt;
+  Spacing Demo Element
+&lt;/div&gt;</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 6: Width & Height Section -->
+      <section id="sec-sizing" class="doc-section scroll-mt-24 bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm overflow-hidden">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <h2 class="font-display font-bold text-2xl flex items-center gap-3"><i class="fa-solid fa-expand text-primary"></i> 6. Width &amp; Height</h2>
+          <button class="toggle-section-btn text-slate-400 hover:text-slate-600"><i class="fa-solid fa-chevron-up text-lg"></i></button>
+        </div>
+        <div class="section-content p-6 space-y-6">
+          <p class="text-sm text-slate-600 dark:text-slate-400">Control sizing dimensions with fraction scales, exact lengths, or screen dimensions.</p>
+          
+          <div class="space-y-3 p-4 border border-slate-200 dark:border-slate-800 rounded-2xl bg-slate-50 dark:bg-slate-900">
+            <div class="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-7 overflow-hidden relative">
+              <div class="bg-primary h-full w-full flex items-center justify-center text-[10px] text-white font-bold">w-full (100%)</div>
+            </div>
+            <div class="w-1/2 bg-primary text-white rounded-full h-7 flex items-center justify-center text-[10px] font-bold shadow-sm">w-1/2 (50%)</div>
+            <div class="w-1/3 bg-secondary text-white rounded-full h-7 flex items-center justify-center text-[10px] font-bold shadow-sm">w-1/3 (33.3%)</div>
+            <div class="w-2/3 bg-accent text-white rounded-full h-7 flex items-center justify-center text-[10px] font-bold shadow-sm">w-2/3 (66.6%)</div>
+          </div>
+
+          <div class="code-wrapper">
+            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-solid fa-copy"></i> Copy</button>
+            <pre><code>&lt;!-- Width and Height scaling --&gt;
+&lt;div class="w-full max-w-md h-64 bg-slate-200"&gt;&lt;/div&gt;
+&lt;div class="w-1/2 h-screen"&gt;&lt;/div&gt;</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 7: Borders Section -->
+      <section id="sec-borders" class="doc-section scroll-mt-24 bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm overflow-hidden">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <h2 class="font-display font-bold text-2xl flex items-center gap-3"><i class="fa-solid fa-square text-primary"></i> 7. Borders</h2>
+          <button class="toggle-section-btn text-slate-400 hover:text-slate-600"><i class="fa-solid fa-chevron-up text-lg"></i></button>
+        </div>
+        <div class="section-content p-6 space-y-6">
+          <p class="text-sm text-slate-600 dark:text-slate-400">Configure border widths, borders styles, border colors, and corner boundary radius properties.</p>
+          
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div class="p-4 border-2 border-primary border-solid bg-slate-50 dark:bg-slate-900 rounded-md text-center text-xs font-semibold">
+              border-2 border-solid rounded-md
+            </div>
+            <div class="p-4 border-4 border-secondary border-dashed bg-slate-50 dark:bg-slate-900 rounded-lg text-center text-xs font-semibold">
+              border-4 border-dashed rounded-lg
+            </div>
+            <div class="p-4 border-8 border-accent border-dotted bg-slate-50 dark:bg-slate-900 rounded-xl text-center text-xs font-semibold">
+              border-8 border-dotted rounded-xl
+            </div>
+            <div class="p-4 border-2 border-slate-400 border-double bg-slate-50 dark:bg-slate-900 rounded-full text-center text-[10px] font-semibold flex items-center justify-center">
+              border-double rounded-full
+            </div>
+          </div>
+
+          <div class="code-wrapper">
+            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-solid fa-copy"></i> Copy</button>
+            <pre><code>&lt;!-- Border styling --&gt;
+&lt;div class="border-4 border-dashed border-blue-500 rounded-3xl"&gt;&lt;/div&gt;</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 8: Display Section -->
+      <section id="sec-display" class="doc-section scroll-mt-24 bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm overflow-hidden">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <h2 class="font-display font-bold text-2xl flex items-center gap-3"><i class="fa-solid fa-eye text-primary"></i> 8. Display</h2>
+          <button class="toggle-section-btn text-slate-400 hover:text-slate-600"><i class="fa-solid fa-chevron-up text-lg"></i></button>
+        </div>
+        <div class="section-content p-6 space-y-6">
+          <p class="text-sm text-slate-600 dark:text-slate-400">Determine baseline placement rules: block elements, inline blocks, flexboxes, grids, or hidden layers.</p>
+          
+          <div class="border border-slate-200 dark:border-slate-800 rounded-2xl p-6 space-y-4 bg-slate-50 dark:bg-slate-900">
+            <div>
+              <span class="block text-xs font-bold text-slate-400 mb-1">inline-block layout:</span>
+              <div class="inline-block bg-primary text-white px-3 py-1.5 text-xs rounded-xl mr-2">Box 1</div>
+              <div class="inline-block bg-secondary text-white px-3 py-1.5 text-xs rounded-xl">Box 2</div>
+            </div>
+            <div>
+              <span class="block text-xs font-bold text-slate-400 mb-1">block layout:</span>
+              <div class="block bg-accent text-white px-4 py-1.5 text-xs rounded-xl mb-1.5">Full Width Box 1</div>
+              <div class="block bg-slate-600 text-white px-4 py-1.5 text-xs rounded-xl">Full Width Box 2</div>
+            </div>
+          </div>
+
+          <div class="code-wrapper">
+            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-solid fa-copy"></i> Copy</button>
+            <pre><code>&lt;!-- Display behaviors --&gt;
+&lt;div class="block"&gt;Full Width Block&lt;/div&gt;
+&lt;div class="inline-block"&gt;Inline Block&lt;/div&gt;
+&lt;div class="hidden"&gt;Invisible Node&lt;/div&gt;</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 9: Flexbox Section (Interactive Playground) -->
+      <section id="sec-flexbox" class="doc-section scroll-mt-24 bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm overflow-hidden">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <h2 class="font-display font-bold text-2xl flex items-center gap-3"><i class="fa-solid fa-grip text-primary"></i> 9. Flexbox Playground</h2>
+          <button class="toggle-section-btn text-slate-400 hover:text-slate-600"><i class="fa-solid fa-chevron-up text-lg"></i></button>
+        </div>
+        <div class="section-content p-6 space-y-6">
+          <p class="text-sm text-slate-600 dark:text-slate-400">Flexbox aligns items in one direction. Adjust parameters below to preview layouts instantly.</p>
+          
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl text-xs font-semibold">
+            <div>
+              <label class="block text-slate-400 mb-1">flex-direction</label>
+              <select id="flexDirSelect" class="w-full bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 p-2 rounded-xl">
+                <option value="flex-row">flex-row</option>
+                <option value="flex-col">flex-col</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-slate-400 mb-1">justify-content</label>
+              <select id="flexJustifySelect" class="w-full bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 p-2 rounded-xl">
+                <option value="justify-start">justify-start</option>
+                <option value="justify-center">justify-center</option>
+                <option value="justify-end">justify-end</option>
+                <option value="justify-between">justify-between</option>
+                <option value="justify-around">justify-around</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-slate-400 mb-1">align-items</label>
+              <select id="flexItemsSelect" class="w-full bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 p-2 rounded-xl">
+                <option value="items-stretch">items-stretch</option>
+                <option value="items-start">items-start</option>
+                <option value="items-center">items-center</option>
+                <option value="items-end">items-end</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-slate-400 mb-1">gap</label>
+              <select id="flexGapSelect" class="w-full bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 p-2 rounded-xl">
+                <option value="gap-4">gap-4</option>
+                <option value="gap-8">gap-8</option>
+                <option value="gap-12">gap-12</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="border border-slate-200 dark:border-slate-800 rounded-2xl p-6 min-h-[200px] flex items-center justify-center bg-slate-100/50 dark:bg-slate-900/30">
+            <div id="flexSandbox" class="flex flex-row justify-start items-stretch gap-4 w-full h-[150px] bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 rounded-xl p-4 transition-all duration-300">
+              <div class="bg-primary text-white font-bold p-4 rounded-xl flex items-center justify-center min-w-[60px]">1</div>
+              <div class="bg-secondary text-white font-bold p-4 rounded-xl flex items-center justify-center min-w-[60px]">2</div>
+              <div class="bg-accent text-white font-bold p-4 rounded-xl flex items-center justify-center min-w-[60px]">3</div>
+            </div>
+          </div>
+
+          <div class="code-wrapper mt-4">
+            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-solid fa-copy"></i> Copy</button>
+            <pre><code id="flexGeneratedClasses">&lt;div class="flex flex-row justify-start items-stretch gap-4"&gt;...&lt;/div&gt;</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 10: Grid Section -->
+      <section id="sec-grid" class="doc-section scroll-mt-24 bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm overflow-hidden">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <h2 class="font-display font-bold text-2xl flex items-center gap-3"><i class="fa-solid fa-border-all text-primary"></i> 10. Grid Section</h2>
+          <button class="toggle-section-btn text-slate-400 hover:text-slate-600"><i class="fa-solid fa-chevron-up text-lg"></i></button>
+        </div>
+        <div class="section-content p-6 space-y-6">
+          <p class="text-sm text-slate-600 dark:text-slate-400">Configure responsive 2-dimensional layouts using column count selectors and cell spans.</p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl bg-slate-50 dark:bg-slate-900">
+            <div class="bg-primary/20 border border-primary text-primary font-bold p-4 rounded-xl text-center text-xs col-span-2">col-span-2</div>
+            <div class="bg-slate-200 dark:bg-slate-800 p-4 rounded-xl text-center text-xs font-semibold">Box 2</div>
+            <div class="bg-slate-200 dark:bg-slate-800 p-4 rounded-xl text-center text-xs font-semibold">Box 3</div>
+            <div class="bg-slate-200 dark:bg-slate-800 p-4 rounded-xl text-center text-xs font-semibold col-span-2">col-span-2</div>
+          </div>
+
+          <div class="code-wrapper">
+            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-solid fa-copy"></i> Copy</button>
+            <pre><code>&lt;!-- Grid template markup --&gt;
+&lt;div class="grid grid-cols-1 md:grid-cols-3 gap-4"&gt;
+  &lt;div class="col-span-2 bg-blue-500 text-white"&gt;Span 2 Cols&lt;/div&gt;
+  &lt;div class="bg-slate-200"&gt;1 Col&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 11: Positioning Section -->
+      <section id="sec-position" class="doc-section scroll-mt-24 bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm overflow-hidden">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <h2 class="font-display font-bold text-2xl flex items-center gap-3"><i class="fa-solid fa-map-pin text-primary"></i> 11. Positioning</h2>
+          <button class="toggle-section-btn text-slate-400 hover:text-slate-600"><i class="fa-solid fa-chevron-up text-lg"></i></button>
+        </div>
+        <div class="section-content p-6 space-y-6">
+          <p class="text-sm text-slate-600 dark:text-slate-400">Position elements relative to documents, screens, or relative parent structures.</p>
+          
+          <div class="border border-slate-200 dark:border-slate-800 rounded-2xl p-4 bg-slate-50 dark:bg-slate-900">
+            <div class="flex items-center gap-2 mb-4 text-xs font-bold">
+              <span>Positioning coordinates:</span>
+              <select id="posRuleSelect" class="bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 p-1.5 rounded-xl">
+                <option value="top-0 left-0">top-0 left-0 (Top Left)</option>
+                <option value="top-0 right-0">top-0 right-0 (Top Right)</option>
+                <option value="bottom-0 left-0">bottom-0 left-0 (Bottom Left)</option>
+                <option value="bottom-0 right-0">bottom-0 right-0 (Bottom Right)</option>
+              </select>
+            </div>
+            
+            <div class="relative h-[160px] w-full bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 rounded-xl p-2 overflow-hidden">
+              <span class="text-[9px] font-bold text-slate-400 uppercase absolute top-2 left-3">Parent container (relative)</span>
+              
+              <div id="posElement" class="absolute top-0 left-0 bg-accent text-white p-3 rounded-xl shadow-md font-bold text-xs flex items-center gap-1.5 transition-all duration-300">
+                <i class="fa-solid fa-crosshairs"></i> absolute element
+              </div>
+            </div>
+          </div>
+
+          <div class="code-wrapper">
+            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-solid fa-copy"></i> Copy</button>
+            <pre><code>&lt;!-- Absolute child within relative parent --&gt;
+&lt;div class="relative w-64 h-64 bg-slate-100"&gt;
+  &lt;div class="absolute top-0 right-0 bg-accent text-white px-3 py-1"&gt;Pin to Top-Right&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 12: Box Model Section -->
+      <section id="sec-boxmodel" class="doc-section scroll-mt-24 bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm overflow-hidden">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <h2 class="font-display font-bold text-2xl flex items-center gap-3"><i class="fa-solid fa-box text-primary"></i> 12. Box Model</h2>
+          <button class="toggle-section-btn text-slate-400 hover:text-slate-600"><i class="fa-solid fa-chevron-up text-lg"></i></button>
+        </div>
+        <div class="section-content p-6 space-y-6">
+          <p class="text-sm text-slate-600 dark:text-slate-400">Hover over the layers below to view details about spacing parameters.</p>
+          
+          <div class="flex flex-col items-center justify-center py-6 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl">
+            <!-- Box Model interactive visual -->
+            <div id="bmMargin" class="w-full max-w-sm bg-orange-100 dark:bg-orange-950/40 p-4 border border-orange-300 rounded-xl text-center cursor-pointer transition-colors duration-200">
+              <span class="text-[9px] font-bold text-orange-500 block mb-1">MARGIN (m-4)</span>
+              
+              <div id="bmBorder" class="bg-blue-100 dark:bg-blue-950/40 p-4 border border-blue-400 rounded-xl text-center transition-colors duration-200">
+                <span class="text-[9px] font-bold text-blue-500 block mb-1">BORDER (border)</span>
+                
+                <div id="bmPadding" class="bg-green-100 dark:bg-green-950/40 p-4 border border-green-300 rounded-lg text-center transition-colors duration-200">
+                  <span class="text-[9px] font-bold text-green-500 block mb-1">PADDING (p-4)</span>
+                  
+                  <div id="bmContent" class="bg-white dark:bg-darkCard py-2 border border-slate-300 dark:border-slate-700 rounded shadow-sm text-xs font-bold transition-colors duration-200">
+                    CONTENT
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="boxModelExplanation" class="mt-4 text-xs font-medium text-slate-600 dark:text-slate-400 text-center">
+              Hover over areas to explore CSS structure mappings.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 13: Effects Section -->
+      <section id="sec-effects" class="doc-section scroll-mt-24 bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm overflow-hidden">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <h2 class="font-display font-bold text-2xl flex items-center gap-3"><i class="fa-solid fa-magic-wand-sparkles text-primary"></i> 13. Effects &amp; Shadows</h2>
+          <button class="toggle-section-btn text-slate-400 hover:text-slate-600"><i class="fa-solid fa-chevron-up text-lg"></i></button>
+        </div>
+        <div class="section-content p-6 space-y-6">
+          <p class="text-sm text-slate-600 dark:text-slate-400">Control visual shadows, element opacities, and backdrop-filters (blur, contrast).</p>
+          
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="p-4 bg-white dark:bg-darkCard shadow-md rounded-2xl text-center text-xs font-semibold">shadow-md</div>
+            <div class="p-4 bg-white dark:bg-darkCard shadow-xl rounded-2xl text-center text-xs font-semibold">shadow-xl</div>
+            <div class="p-4 bg-white dark:bg-darkCard opacity-50 rounded-2xl text-center text-xs font-semibold">opacity-50</div>
+            <div class="p-4 bg-white dark:bg-darkCard blur-[2px] rounded-2xl text-center text-xs font-semibold">blur-[2px]</div>
+          </div>
+
+          <div class="code-wrapper">
+            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-solid fa-copy"></i> Copy</button>
+            <pre><code>&lt;!-- Shadows &amp; filters --&gt;
+&lt;div class="shadow-xl opacity-75 blur-[1px]"&gt;
+  Stylized Effects Container
+&lt;/div&gt;</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 14: Transform Section -->
+      <section id="sec-transform" class="doc-section scroll-mt-24 bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm overflow-hidden">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <h2 class="font-display font-bold text-2xl flex items-center gap-3"><i class="fa-solid fa-arrows-spin text-primary"></i> 14. Transforms</h2>
+          <button class="toggle-section-btn text-slate-400 hover:text-slate-600"><i class="fa-solid fa-chevron-up text-lg"></i></button>
+        </div>
+        <div class="section-content p-6 space-y-6">
+          <p class="text-sm text-slate-600 dark:text-slate-400">Hover over the blocks below to preview scaling, rotation, skewing, and translates.</p>
+          
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div class="p-6 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl text-center transition-all duration-300 hover:scale-110 cursor-pointer">
+              <span class="block text-xs font-bold mb-2">Scale</span>
+              <div class="w-10 h-10 bg-primary rounded-lg mx-auto"></div>
+              <span class="block text-[10px] text-slate-400 mt-2">hover:scale-110</span>
+            </div>
+            <div class="p-6 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl text-center transition-all duration-300 hover:rotate-12 cursor-pointer">
+              <span class="block text-xs font-bold mb-2">Rotate</span>
+              <div class="w-10 h-10 bg-secondary rounded-lg mx-auto"></div>
+              <span class="block text-[10px] text-slate-400 mt-2">hover:rotate-12</span>
+            </div>
+            <div class="p-6 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl text-center transition-all duration-300 hover:translate-y-[-8px] cursor-pointer">
+              <span class="block text-xs font-bold mb-2">Translate</span>
+              <div class="w-10 h-10 bg-accent rounded-lg mx-auto"></div>
+              <span class="block text-[10px] text-slate-400 mt-2">hover:-translate-y-2</span>
+            </div>
+            <div class="p-6 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl text-center transition-all duration-300 hover:skew-x-6 cursor-pointer">
+              <span class="block text-xs font-bold mb-2">Skew</span>
+              <div class="w-10 h-10 bg-indigo-500 rounded-lg mx-auto"></div>
+              <span class="block text-[10px] text-slate-400 mt-2">hover:skew-x-6</span>
+            </div>
+          </div>
+
+          <div class="code-wrapper">
+            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-solid fa-copy"></i> Copy</button>
+            <pre><code>&lt;!-- Transforms on hover --&gt;
+&lt;div class="transition-transform duration-300 hover:scale-105 hover:rotate-3"&gt;
+  Interactive Transform Card
+&lt;/div&gt;</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 15: Transition Section -->
+      <section id="sec-transition" class="doc-section scroll-mt-24 bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm overflow-hidden">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <h2 class="font-display font-bold text-2xl flex items-center gap-3"><i class="fa-solid fa-clock text-primary"></i> 15. Transitions</h2>
+          <button class="toggle-section-btn text-slate-400 hover:text-slate-600"><i class="fa-solid fa-chevron-up text-lg"></i></button>
+        </div>
+        <div class="section-content p-6 space-y-6">
+          <p class="text-sm text-slate-600 dark:text-slate-400">Interpolate CSS updates with ease properties (<code class="font-mono">transition-colors</code>, <code class="font-mono">duration-500</code>).</p>
+          
+          <div class="p-6 border border-slate-200 dark:border-slate-800 rounded-2xl flex flex-wrap gap-4 items-center justify-center bg-slate-50 dark:bg-slate-900">
+            <button class="px-6 py-2.5 bg-slate-800 text-white font-semibold text-xs rounded-xl hover:bg-primary transition-colors duration-500">
+              transition-colors duration-500
+            </button>
+            <button class="px-6 py-2.5 bg-slate-800 text-white font-semibold text-xs rounded-xl hover:bg-secondary transition-all duration-1000">
+              duration-1000
+            </button>
+          </div>
+
+          <div class="code-wrapper">
+            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-solid fa-copy"></i> Copy</button>
+            <pre><code>&lt;!-- Transitions --&gt;
+&lt;button class="transition-all duration-300 ease-in-out hover:bg-blue-600"&gt;
+  Animate Color Shift
+&lt;/button></code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 16: Animation Section -->
+      <section id="sec-animation" class="doc-section scroll-mt-24 bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm overflow-hidden">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <h2 class="font-display font-bold text-2xl flex items-center gap-3"><i class="fa-solid fa-film text-primary"></i> 16. Animations</h2>
+          <button class="toggle-section-btn text-slate-400 hover:text-slate-600"><i class="fa-solid fa-chevron-up text-lg"></i></button>
+        </div>
+        <div class="section-content p-6 space-y-6">
+          <p class="text-sm text-slate-600 dark:text-slate-400">Tailwind ships with multiple core animation loop keyframes.</p>
+          
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-6 p-6 border border-slate-200 dark:border-slate-800 rounded-2xl bg-slate-50 dark:bg-slate-900">
+            <div class="text-center font-bold text-xs space-y-4">
+              <div class="w-12 h-12 bg-primary rounded-xl mx-auto flex items-center justify-center text-white animate-spin">
+                <i class="fa-solid fa-rotate"></i>
+              </div>
+              <span>animate-spin</span>
+            </div>
+            <div class="text-center font-bold text-xs space-y-4">
+              <div class="w-12 h-12 bg-secondary rounded-xl mx-auto flex items-center justify-center text-white animate-bounce">
+                <i class="fa-solid fa-arrow-down"></i>
+              </div>
+              <span>animate-bounce</span>
+            </div>
+            <div class="text-center font-bold text-xs space-y-4">
+              <div class="w-12 h-12 bg-accent rounded-xl mx-auto flex items-center justify-center text-white animate-pulse">
+                <i class="fa-solid fa-heart"></i>
+              </div>
+              <span>animate-pulse</span>
+            </div>
+            <div class="text-center font-bold text-xs space-y-4 relative">
+              <div class="w-12 h-12 bg-indigo-500 rounded-full mx-auto flex items-center justify-center text-white animate-ping">
+              </div>
+              <span class="block mt-4">animate-ping</span>
+            </div>
+          </div>
+
+          <div class="code-wrapper">
+            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-solid fa-copy"></i> Copy</button>
+            <pre><code>&lt;!-- Predefined animations --&gt;
+&lt;div class="animate-bounce"&gt;Bouncing Box&lt;/div&gt;
+&lt;div class="animate-spin"&gt;Spinning Icon&lt;/div&gt;</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 17: Responsive Design Section -->
+      <section id="sec-responsive" class="doc-section scroll-mt-24 bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm overflow-hidden">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <h2 class="font-display font-bold text-2xl flex items-center gap-3"><i class="fa-solid fa-mobile-screen text-primary"></i> 17. Responsive Design</h2>
+          <button class="toggle-section-btn text-slate-400 hover:text-slate-600"><i class="fa-solid fa-chevron-up text-lg"></i></button>
+        </div>
+        <div class="section-content p-6 space-y-6">
+          <p class="text-sm text-slate-600 dark:text-slate-400">Tailwind styles apply mobile-first: styles target specific pixel width breakpoints dynamically.</p>
+          
+          <div class="overflow-x-auto border border-slate-200 dark:border-slate-800 rounded-2xl">
+            <table class="w-full text-xs text-left">
+              <thead class="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
+                <tr>
+                  <th class="p-3 font-semibold">Prefix</th>
+                  <th class="p-3 font-semibold">Min Width</th>
+                  <th class="p-3 font-semibold">Example Use Case</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200 dark:divide-slate-800 font-mono">
+                <tr>
+                  <td class="p-3 font-bold text-primary">sm:</td>
+                  <td class="p-3">640px</td>
+                  <td class="p-3">sm:grid-cols-2</td>
+                </tr>
+                <tr>
+                  <td class="p-3 font-bold text-primary">md:</td>
+                  <td class="p-3">768px</td>
+                  <td class="p-3">md:flex-row</td>
+                </tr>
+                <tr>
+                  <td class="p-3 font-bold text-primary">lg:</td>
+                  <td class="p-3">1024px</td>
+                  <td class="p-3">lg:w-1/3</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="code-wrapper">
+            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-solid fa-copy"></i> Copy</button>
+            <pre><code>&lt;!-- Responsive breakpoints --&gt;
+&lt;div class="w-full md:w-1/2 lg:w-1/3 bg-blue-500"&gt;
+  Responsive Box Sizing
+&lt;/div&gt;</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 18: States Section -->
+      <section id="sec-states" class="doc-section scroll-mt-24 bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm overflow-hidden">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <h2 class="font-display font-bold text-2xl flex items-center gap-3"><i class="fa-solid fa-fingerprint text-primary"></i> 18. States &amp; Focus</h2>
+          <button class="toggle-section-btn text-slate-400 hover:text-slate-600"><i class="fa-solid fa-chevron-up text-lg"></i></button>
+        </div>
+        <div class="section-content p-6 space-y-6">
+          <p class="text-sm text-slate-600 dark:text-slate-400">Style nodes when targeted by user hover behaviors or check statuses.</p>
+          
+          <div class="max-w-md mx-auto p-6 border border-slate-200 dark:border-slate-800 rounded-2xl bg-slate-50 dark:bg-slate-900 space-y-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-400 mb-1">Interactive Input (Focus State)</label>
+              <input type="text" placeholder="Hover or focus here..." class="w-full px-4 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-darkCard focus:outline-none focus:ring-2 focus:ring-primary hover:border-primary transition-all duration-200">
+            </div>
+            <button class="w-full py-2 bg-slate-400 text-white font-semibold text-xs rounded-xl cursor-not-allowed disabled:opacity-50" disabled>
+              Disabled State
+            </button>
+          </div>
+
+          <div class="code-wrapper">
+            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-solid fa-copy"></i> Copy</button>
+            <pre><code>&lt;!-- Interaction states --&gt;
+&lt;input class="border-slate-300 focus:border-blue-500 focus:ring-2"&gt;
+&lt;button class="hover:bg-blue-600 active:bg-blue-700"&gt;Click Me&lt;/button&gt;</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 19: Pseudo Classes Section -->
+      <section id="sec-pseudo" class="doc-section scroll-mt-24 bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm overflow-hidden">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <h2 class="font-display font-bold text-2xl flex items-center gap-3"><i class="fa-solid fa-code-branch text-primary"></i> 19. Pseudo Classes</h2>
+          <button class="toggle-section-btn text-slate-400 hover:text-slate-600"><i class="fa-solid fa-chevron-up text-lg"></i></button>
+        </div>
+        <div class="section-content p-6 space-y-6">
+          <p class="text-sm text-slate-600 dark:text-slate-400">Style elements selectively using structural order (first, last, odd, even) or sibling behaviors.</p>
+          
+          <div class="space-y-4">
+            <div class="group p-5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl text-center cursor-pointer transition-colors duration-200 hover:bg-slate-800 hover:text-white">
+              <span class="font-bold text-xs text-primary group-hover:text-white transition-colors duration-200"><i class="fa-solid fa-arrow-pointer mr-1"></i> Hover this Container</span>
+              <p class="text-[10px] text-slate-600 dark:text-slate-400 group-hover:text-slate-300 mt-1">This line updates color because of the group-hover rule.</p>
+            </div>
+          </div>
+
+          <div class="code-wrapper">
+            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-solid fa-copy"></i> Copy</button>
+            <pre><code>&lt;!-- Pseudo-classes / group hover --&gt;
+&lt;div class="group p-4 hover:bg-slate-900"&gt;
+  &lt;p class="text-slate-600 dark:text-slate-400 group-hover:text-white"&gt;Toggle text color&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 20: Layout Utilities Section -->
+      <section id="sec-layout-utils" class="doc-section scroll-mt-24 bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm overflow-hidden">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <h2 class="font-display font-bold text-2xl flex items-center gap-3"><i class="fa-solid fa-table-columns text-primary"></i> 20. Layout Utilities</h2>
+          <button class="toggle-section-btn text-slate-400 hover:text-slate-600"><i class="fa-solid fa-chevron-up text-lg"></i></button>
+        </div>
+        <div class="section-content p-6 space-y-6">
+          <p class="text-sm text-slate-600 dark:text-slate-400">Control responsive aspect ratios, text wrapping bounds, columns, or layout overflows.</p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            <div class="p-4 border border-slate-200 dark:border-slate-800 rounded-2xl">
+              <span class="font-bold text-slate-400 block mb-1">aspect-video (16:9 ratio)</span>
+              <div class="aspect-video bg-slate-200 dark:bg-slate-800 rounded-xl flex items-center justify-center font-bold text-slate-400">
+                16:9 aspect box
+              </div>
+            </div>
+            <div class="p-4 border border-slate-200 dark:border-slate-800 rounded-2xl space-y-2">
+              <span class="font-bold text-slate-400 block mb-1">columns-2</span>
+              <p class="columns-2 gap-4 text-[10px] leading-relaxed text-slate-600 dark:text-slate-400">
+                Tailwind CSS columns separate contents into multiple column containers automatically based on height.
+              </p>
+            </div>
+          </div>
+
+          <div class="code-wrapper">
+            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-solid fa-copy"></i> Copy</button>
+            <pre><code>&lt;!-- Aspect ratios &amp; overflows --&gt;
+&lt;div class="aspect-video overflow-hidden rounded-2xl"&gt;
+  &lt;iframe class="w-full h-full"&gt;&lt;/iframe&gt;
+&lt;/div&gt;</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 21: Tables Section -->
+      <section id="sec-tables" class="doc-section scroll-mt-24 bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm overflow-hidden">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <h2 class="font-display font-bold text-2xl flex items-center gap-3"><i class="fa-solid fa-table text-primary"></i> 21. Tables</h2>
+          <button class="toggle-section-btn text-slate-400 hover:text-slate-600"><i class="fa-solid fa-chevron-up text-lg"></i></button>
+        </div>
+        <div class="section-content p-6 space-y-6">
+          <p class="text-sm text-slate-600 dark:text-slate-400">Control table column widths (<code class="font-mono">table-auto</code> vs <code class="font-mono">table-fixed</code>) and boundary border collapses.</p>
+          
+          <div class="overflow-x-auto border border-slate-200 dark:border-slate-800 rounded-2xl bg-slate-50 dark:bg-slate-900 p-4">
+            <table class="w-full text-xs text-left border-collapse">
+              <thead>
+                <tr class="border-b border-slate-300 dark:border-slate-800 font-bold text-slate-400">
+                  <th class="pb-2">Class</th>
+                  <th class="pb-2">Type</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200 dark:divide-slate-800">
+                <tr>
+                  <td class="py-2 font-mono text-primary font-bold">table-auto</td>
+                  <td class="py-2">Auto Layout</td>
+                </tr>
+                <tr>
+                  <td class="py-2 font-mono text-primary font-bold">table-fixed</td>
+                  <td class="py-2">Fixed Widths</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="code-wrapper">
+            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-solid fa-copy"></i> Copy</button>
+            <pre><code>&lt;!-- Table structure --&gt;
+&lt;table class="table-fixed border-collapse w-full"&gt;
+  &lt;thead&gt;&lt;tr&gt;&lt;th class="w-1/2"&gt;Title&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+&lt;/table&gt;</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 22: Lists Section -->
+      <section id="sec-lists" class="doc-section scroll-mt-24 bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm overflow-hidden">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <h2 class="font-display font-bold text-2xl flex items-center gap-3"><i class="fa-solid fa-list-ul text-primary"></i> 22. Lists</h2>
+          <button class="toggle-section-btn text-slate-400 hover:text-slate-600"><i class="fa-solid fa-chevron-up text-lg"></i></button>
+        </div>
+        <div class="section-content p-6 space-y-6">
+          <p class="text-sm text-slate-600 dark:text-slate-400">Select standard bullet structures: ordered decimal formatting, unordered disks, or empty lists.</p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs border border-slate-200 dark:border-slate-800 p-4 rounded-2xl bg-slate-50 dark:bg-slate-900">
+            <div>
+              <span class="block text-slate-400 mb-1">list-disc</span>
+              <ul class="list-disc list-inside space-y-1 text-slate-600 dark:text-slate-300">
+                <li>Responsive grids</li>
+                <li>Design colors</li>
+              </ul>
+            </div>
+            <div>
+              <span class="block text-slate-400 mb-1">list-decimal</span>
+              <ol class="list-decimal list-inside space-y-1 text-slate-600 dark:text-slate-300">
+                <li>Flex Alignments</li>
+                <li>Animation Hooks</li>
+              </ol>
+            </div>
+          </div>
+
+          <div class="code-wrapper">
+            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-solid fa-copy"></i> Copy</button>
+            <pre><code>&lt;!-- List styles --&gt;
+&lt;ul class="list-disc list-inside space-y-2 text-slate-600"&gt;
+  &lt;li&gt;Item One&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 23: SVG Section -->
+      <section id="sec-svg" class="doc-section scroll-mt-24 bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm overflow-hidden">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <h2 class="font-display font-bold text-2xl flex items-center gap-3"><i class="fa-solid fa-circle-nodes text-primary"></i> 23. SVG Styles</h2>
+          <button class="toggle-section-btn text-slate-400 hover:text-slate-600"><i class="fa-solid fa-chevron-up text-lg"></i></button>
+        </div>
+        <div class="section-content p-6 space-y-6">
+          <p class="text-sm text-slate-600 dark:text-slate-400">Style vector graphic parameters using color fills and stroke attributes directly.</p>
+          
+          <div class="flex items-center gap-4 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 justify-center">
+            <svg class="w-10 h-10 text-primary fill-current transition-colors duration-300 hover:text-accent cursor-pointer" viewBox="0 0 24 24">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+            <span class="text-xs text-slate-600 dark:text-slate-400">hover over vector shape to adjust current colors</span>
+          </div>
+
+          <div class="code-wrapper">
+            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-solid fa-copy"></i> Copy</button>
+            <pre><code>&lt;!-- SVG colors --&gt;
+&lt;svg class="w-6 h-6 text-blue-500 fill-current stroke-current" viewBox="0 0 24 24"&gt;
+  &lt;circle cx="12" cy="12" r="10"&gt;&lt;/circle&gt;
+&lt;/svg></code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 24: Interactivity Section -->
+      <section id="sec-interactivity" class="doc-section scroll-mt-24 bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm overflow-hidden">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <h2 class="font-display font-bold text-2xl flex items-center gap-3"><i class="fa-solid fa-arrow-pointer text-primary"></i> 24. Interactivity</h2>
+          <button class="toggle-section-btn text-slate-400 hover:text-slate-600"><i class="fa-solid fa-chevron-up text-lg"></i></button>
+        </div>
+        <div class="section-content p-6 space-y-6">
+          <p class="text-sm text-slate-600 dark:text-slate-400">Control browser cursors, text box resize utilities, pointer events, and text copy selections.</p>
+          
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="p-4 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl text-center text-xs font-semibold cursor-not-allowed">
+              cursor-not-allowed
+            </div>
+            <div class="p-4 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl text-center text-xs font-semibold select-none">
+              select-none
+            </div>
+            <div class="p-4 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl text-center text-xs font-semibold pointer-events-none">
+              pointer-events-none
+            </div>
+            <div class="p-4 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl text-center text-xs font-semibold cursor-zoom-in">
+              cursor-zoom-in
+            </div>
+          </div>
+
+          <div class="code-wrapper">
+            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-solid fa-copy"></i> Copy</button>
+            <pre><code>&lt;!-- Interactivity parameters --&gt;
+&lt;div class="cursor-pointer select-none"&gt;Interactive Element&lt;/div&gt;</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 25: Dark Mode Section -->
+      <section id="sec-darkmode" class="doc-section scroll-mt-24 bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm overflow-hidden">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <h2 class="font-display font-bold text-2xl flex items-center gap-3"><i class="fa-solid fa-moon text-primary"></i> 25. Dark Mode Logic</h2>
+          <button class="toggle-section-btn text-slate-400 hover:text-slate-600"><i class="fa-solid fa-chevron-up text-lg"></i></button>
+        </div>
+        <div class="section-content p-6 space-y-6">
+          <p class="text-sm text-slate-600 dark:text-slate-400">Implement responsive colors under dark modes using <code class="font-mono">dark:</code> class tags.</p>
+          
+          <div class="p-6 border border-slate-200 dark:border-slate-800 rounded-2xl bg-slate-50 dark:bg-slate-900 text-center">
+            <h4 class="font-bold text-sm text-slate-800 dark:text-white">Reactive Theme Box</h4>
+            <p class="text-xs text-slate-600 dark:text-slate-400 dark:text-slate-400 mt-2">
+              This card modifies background patterns when modes change.
+            </p>
+          </div>
+
+          <div class="code-wrapper">
+            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-solid fa-copy"></i> Copy</button>
+            <pre><code>&lt;!-- Dark mode mapping --&gt;
+&lt;div class="bg-white text-slate-900 dark:bg-slate-800 dark:text-white"&gt;
+  Responsive Theme Box
+&lt;/div&gt;</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 26: Customization Section -->
+      <section id="sec-customization" class="doc-section scroll-mt-24 bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm overflow-hidden">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <h2 class="font-display font-bold text-2xl flex items-center gap-3"><i class="fa-solid fa-sliders text-primary"></i> 26. Customization</h2>
+          <button class="toggle-section-btn text-slate-400 hover:text-slate-600"><i class="fa-solid fa-chevron-up text-lg"></i></button>
+        </div>
+        <div class="section-content p-6 space-y-6">
+          <p class="text-sm text-slate-600 dark:text-slate-400">Configure theme values, add custom color palettes, and register plugins inside configurations.</p>
+          
+          <div class="relative">
+            <div class="code-wrapper">
+              <button class="copy-btn" onclick="copyCode(this)"><i class="fa-solid fa-copy"></i> Copy</button>
+              <pre><code>// tailwind.config.js
+module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        brand: '#2563EB',
+      }
+    }
+  }
+}</code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 27: Official Plugins -->
+      <section id="sec-plugins" class="doc-section scroll-mt-24 bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm overflow-hidden">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <h2 class="font-display font-bold text-2xl flex items-center gap-3"><i class="fa-solid fa-plug text-primary"></i> 27. Official Plugins</h2>
+          <button class="toggle-section-btn text-slate-400 hover:text-slate-600"><i class="fa-solid fa-chevron-up text-lg"></i></button>
+        </div>
+        <div class="section-content p-6 space-y-6">
+          <p class="text-sm text-slate-600 dark:text-slate-400">Tailwind offers official extensions to manage forms, layout aspects, and typography flows.</p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            <div class="p-4 border border-slate-200 dark:border-slate-800 rounded-2xl bg-slate-50 dark:bg-slate-900/50">
+              <h4 class="font-bold text-primary mb-1">@tailwindcss/forms</h4>
+              <p class="text-slate-600 dark:text-slate-400">Normalizes input form element borders.</p>
+            </div>
+            <div class="p-4 border border-slate-200 dark:border-slate-800 rounded-2xl bg-slate-50 dark:bg-slate-900/50">
+              <h4 class="font-bold text-primary mb-1">@tailwindcss/typography</h4>
+              <p class="text-slate-600 dark:text-slate-400">Injects class <code class="font-mono">prose</code> to style markdown nodes.</p>
+            </div>
+            <div class="p-4 border border-slate-200 dark:border-slate-800 rounded-2xl bg-slate-50 dark:bg-slate-900/50">
+              <h4 class="font-bold text-primary mb-1">@tailwindcss/aspect-ratio</h4>
+              <p class="text-slate-600 dark:text-slate-400">Configures fallback container size bounds.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 28: Components Library -->
+      <section id="sec-library" class="doc-section scroll-mt-24 bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm overflow-hidden">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <h2 class="font-display font-bold text-2xl flex items-center gap-3"><i class="fa-solid fa-layer-group text-primary"></i> 28. Components Library</h2>
+          <button class="toggle-section-btn text-slate-400 hover:text-slate-600"><i class="fa-solid fa-chevron-up text-lg"></i></button>
+        </div>
+        <div class="section-content p-6 space-y-8">
+          <p class="text-sm text-slate-600 dark:text-slate-400">Copy or preview standard UI components below, complete with individual copyable code blocks.</p>
+          
+          <!-- Component: Buttons -->
+          <div class="border border-slate-200 dark:border-slate-800 rounded-3xl p-6 bg-slate-50 dark:bg-slate-900/30">
+            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">1. Buttons</h4>
+            <div class="flex flex-wrap gap-3 mb-4">
+              <button class="bg-primary hover:bg-primary-dark transition-colors text-white px-6 py-3 rounded-full text-xs font-semibold shadow-md shadow-primary/20">
+                Primary Button
+              </button>
+              <button class="border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-800 dark:text-white px-6 py-3 rounded-full text-xs font-semibold">
+                Secondary Button
+              </button>
+            </div>
+            <div class="code-wrapper">
+              <button class="copy-btn" onclick="copyCode(this)"><i class="fa-solid fa-copy"></i> Copy</button>
+              <pre><code>&lt;!-- Primary &amp; Secondary Buttons --&gt;
+&lt;button class="bg-blue-600 hover:bg-blue-700 transition-colors text-white px-6 py-3 rounded-full font-semibold text-xs"&gt;Primary&lt;/button&gt;
+&lt;button class="border border-slate-300 hover:bg-slate-100 transition-colors text-slate-800 px-6 py-3 rounded-full font-semibold text-xs"&gt;Secondary&lt;/button&gt;</code></pre>
+            </div>
+          </div>
+
+          <!-- Component: Card -->
+          <div class="border border-slate-200 dark:border-slate-800 rounded-3xl p-6 bg-slate-50 dark:bg-slate-900/30">
+            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">2. Card Component</h4>
+            <div class="max-w-sm bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden shadow-md card-hover p-6 mb-4">
+              <span class="text-primary font-bold text-[10px] uppercase tracking-widest">Featured</span>
+              <h5 class="font-display font-bold text-lg mt-1">Design System Card</h5>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">
+                A clean card container utilizing border alignments and drop shadows.
+              </p>
+            </div>
+            <div class="code-wrapper">
+              <button class="copy-btn" onclick="copyCode(this)"><i class="fa-solid fa-copy"></i> Copy</button>
+              <pre><code>&lt;!-- Card Component --&gt;
+&lt;div class="max-w-sm bg-white border border-slate-200 rounded-3xl p-6 shadow-md transition-transform duration-300 hover:-translate-y-1"&gt;
+  &lt;span class="text-blue-600 font-bold text-[10px] uppercase tracking-widest"&gt;Featured&lt;/span&gt;
+  &lt;h5 class="font-bold text-lg mt-1"&gt;Card Title&lt;/h5&gt;
+  &lt;p class="text-xs text-slate-600 dark:text-slate-400 mt-2"&gt;Content description text.&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+            </div>
+          </div>
+
+          <!-- Component: Modal -->
+          <div class="border border-slate-200 dark:border-slate-800 rounded-3xl p-6 bg-slate-50 dark:bg-slate-900/30">
+            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">3. Modal Window Trigger</h4>
+            <button id="openModalBtn" class="bg-accent hover:bg-accent-dark text-white px-5 py-2.5 rounded-full text-xs font-semibold shadow-md shadow-accent/20 mb-4 transition-colors">
+              <i class="fa-solid fa-circle-info mr-1.5"></i> Open Modal Preview
+            </button>
+            <div class="code-wrapper">
+              <button class="copy-btn" onclick="copyCode(this)"><i class="fa-solid fa-copy"></i> Copy</button>
+              <pre><code>&lt;!-- Modal Overlay --&gt;
+&lt;div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4"&gt;
+  &lt;div class="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl space-y-4"&gt;
+    &lt;h3 class="font-bold text-lg"&gt;Notification&lt;/h3&gt;
+    &lt;p class="text-xs text-slate-600 dark:text-slate-400"&gt;Message body.&lt;/p&gt;
+    &lt;button class="px-4 py-2 bg-blue-600 text-white text-xs font-semibold rounded-lg"&gt;Confirm&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+            </div>
+          </div>
+
+          <!-- Component: Pricing Cards -->
+          <div class="border border-slate-200 dark:border-slate-800 rounded-3xl p-6 bg-slate-50 dark:bg-slate-900/30">
+            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">4. Pricing Cards (Interactive Monthly/Yearly Toggle)</h4>
+            <div class="flex justify-center items-center gap-3 mb-6">
+              <span class="text-xs font-semibold text-slate-600 dark:text-slate-400">Monthly</span>
+              <button id="pricingToggle" class="w-12 h-6 bg-slate-300 dark:bg-slate-800 rounded-full p-0.5 transition-all duration-300 relative focus:outline-none">
+                <div id="pricingToggleKnob" class="w-5 h-5 bg-white rounded-full transition-transform duration-300"></div>
+              </button>
+              <span class="text-xs font-semibold text-slate-600 dark:text-slate-400">Yearly <span class="text-accent font-bold text-[10px] bg-accent-light dark:bg-accent/20 px-1.5 py-0.5 rounded ml-1">Save 20%</span></span>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl mx-auto mb-4">
+              <div class="p-6 border border-slate-200 dark:border-slate-800 bg-white dark:bg-darkCard rounded-3xl text-center space-y-3">
+                <span class="text-xs font-bold text-slate-400">STARTER</span>
+                <div class="text-3xl font-extrabold heading-font text-slate-900 dark:text-white">
+                  $<span id="starterPriceVal">19</span><span class="text-xs font-normal text-slate-400">/mo</span>
+                </div>
+              </div>
+              <div class="p-6 border-2 border-primary bg-white dark:bg-darkCard rounded-3xl text-center space-y-3 relative overflow-hidden">
+                <span class="absolute top-0 right-0 bg-primary text-white text-[9px] font-bold px-3 py-1 rounded-bl-lg">POPULAR</span>
+                <span class="text-xs font-bold text-primary">DEVELOPER</span>
+                <div class="text-3xl font-extrabold heading-font text-slate-900 dark:text-white">
+                  $<span id="proPriceVal">49</span><span class="text-xs font-normal text-slate-400">/mo</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="code-wrapper">
+              <button class="copy-btn" onclick="copyCode(this)"><i class="fa-solid fa-copy"></i> Copy</button>
+              <pre><code>&lt;!-- Pricing container --&gt;
+&lt;div class="grid grid-cols-1 md:grid-cols-2 gap-4"&gt;
+  &lt;div class="p-6 border border-slate-200 rounded-3xl text-center"&gt;
+    &lt;h5 class="text-xs font-bold text-slate-400"&gt;STARTER&lt;/h5&gt;
+    &lt;span class="text-3xl font-extrabold"&gt;$19/mo&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+            </div>
+          </div>
+
+          <!-- Component: Dashboard Card -->
+          <div class="border border-slate-200 dark:border-slate-800 rounded-3xl p-6 bg-slate-50 dark:bg-slate-900/30">
+            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">5. Dashboard metric card</h4>
+            <div class="max-w-sm bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 rounded-3xl p-4 flex items-center justify-between shadow-sm mb-4">
+              <div>
+                <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">Completed Lessons</span>
+                <span class="font-display font-extrabold text-2xl">24 / 30</span>
+              </div>
+              <div class="w-10 h-10 bg-primary/10 text-primary rounded-2xl flex items-center justify-center text-lg">
+                <i class="fa-solid fa-circle-check"></i>
+              </div>
+            </div>
+            <div class="code-wrapper">
+              <button class="copy-btn" onclick="copyCode(this)"><i class="fa-solid fa-copy"></i> Copy</button>
+              <pre><code>&lt;!-- Dashboard card --&gt;
+&lt;div class="bg-white border border-slate-200 rounded-3xl p-4 flex items-center justify-between shadow-sm"&gt;
+  &lt;div&gt;
+    &lt;span class="block text-[10px] font-bold text-slate-400 uppercase"&gt;Metrics&lt;/span&gt;
+    &lt;span class="font-extrabold text-2xl"&gt;12,400&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center"&gt;
+    &lt;i class="fa-solid fa-chart-line"&gt;&lt;/i&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+            </div>
+          </div>
+
+          <!-- Component: Navbar -->
+          <div class="border border-slate-200 dark:border-slate-800 rounded-3xl p-6 bg-slate-50 dark:bg-slate-900/30">
+            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">6. Mini Navbar</h4>
+            <nav class="bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 rounded-2xl p-4 flex items-center justify-between shadow-sm mb-4">
+              <span class="font-bold text-sm">Logo</span>
+              <div class="flex gap-4 text-xs font-semibold">
+                <a href="#" class="text-slate-600 hover:text-primary">Home</a>
+                <a href="#" class="text-slate-600 hover:text-primary">Docs</a>
+              </div>
+            </nav>
+            <div class="code-wrapper">
+              <button class="copy-btn" onclick="copyCode(this)"><i class="fa-solid fa-copy"></i> Copy</button>
+              <pre><code>&lt;!-- Navbar layout --&gt;
+&lt;nav class="bg-white border border-slate-200 rounded-2xl p-4 flex items-center justify-between"&gt;
+  &lt;span class="font-bold"&gt;Logo&lt;/span&gt;
+  &lt;div class="flex gap-4 text-xs"&gt;
+    &lt;a href="#" class="text-slate-600 hover:text-blue-600"&gt;Link&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/nav&gt;</code></pre>
+            </div>
+          </div>
+
+          <!-- Component: Footer -->
+          <div class="border border-slate-200 dark:border-slate-800 rounded-3xl p-6 bg-slate-50 dark:bg-slate-900/30">
+            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">7. Clean Footer</h4>
+            <footer class="bg-slate-900 text-slate-400 py-6 px-4 rounded-2xl text-center text-[10px] space-y-2 mb-4">
+              <p>&copy; 2026 Code Platform. All rights reserved. By Deva Raj Bhojanapu.</p>
+            </footer>
+            <div class="code-wrapper">
+              <button class="copy-btn" onclick="copyCode(this)"><i class="fa-solid fa-copy"></i> Copy</button>
+              <pre><code>&lt;!-- Footer --&gt;
+&lt;footer class="bg-slate-900 text-slate-400 py-6 rounded-2xl text-center text-xs"&gt;
+  &lt;p&gt;&amp;copy; 2026 Company. All rights reserved.&lt;/p&gt;
+&lt;/footer&gt;</code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 29: Advanced Tailwind -->
+      <section id="sec-advanced-concepts" class="doc-section scroll-mt-24 bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm overflow-hidden">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <h2 class="font-display font-bold text-2xl flex items-center gap-3"><i class="fa-solid fa-brain text-primary"></i> 29. Advanced Concepts</h2>
+          <button class="toggle-section-btn text-slate-400 hover:text-slate-600"><i class="fa-solid fa-chevron-up text-lg"></i></button>
+        </div>
+        <div class="section-content p-6 space-y-6">
+          <p class="text-sm text-slate-600 dark:text-slate-400">Master custom inline arbitrary layouts (<code class="font-mono">w-[380px]</code>), reusing styles via directives (<code class="font-mono">@apply</code>), and baseline layers.</p>
+          
+          <div class="space-y-4">
+            <div class="p-4 border border-slate-200 dark:border-slate-800 rounded-2xl bg-slate-50 dark:bg-slate-900">
+              <h4 class="font-bold text-xs mb-1.5">Arbitrary Measurements inline</h4>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mb-2">Configure precise lengths directly inside utility tags using brackets: <code class="font-mono bg-slate-200 dark:bg-slate-800 px-1.5 py-0.5 rounded text-primary">w-[380px]</code>, <code class="font-mono bg-slate-200 dark:bg-slate-800 px-1.5 py-0.5 rounded text-primary">h-[calc(100vh-80px)]</code>, or <code class="font-mono bg-slate-200 dark:bg-slate-800 px-1.5 py-0.5 rounded text-primary">bg-[#ff00aa]</code>.</p>
+            </div>
+
+            <div class="p-4 border border-slate-200 dark:border-slate-800 rounded-2xl bg-slate-50 dark:bg-slate-900">
+              <h4 class="font-bold text-xs mb-1.5">Class bundling using @apply</h4>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mb-2">Bundle classes directly inside custom CSS sheets to keep layouts cleaner:</p>
+              <pre class="bg-slate-900 text-slate-200 rounded-xl p-3 text-[10px] font-mono overflow-x-auto"><code>.btn-primary {
+  @apply px-6 py-3 bg-blue-600 text-white rounded-full font-semibold;
+}</code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 30: Tailwind Cheat Sheet Section -->
+      <section id="sec-cheatsheet" class="doc-section scroll-mt-24 bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm overflow-hidden">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <h2 class="font-display font-bold text-2xl flex items-center gap-3"><i class="fa-solid fa-table text-primary"></i> 30. Quick Cheat Sheet</h2>
+          <button class="toggle-section-btn text-slate-400 hover:text-slate-600"><i class="fa-solid fa-chevron-up text-lg"></i></button>
+        </div>
+        <div class="section-content p-6 space-y-6">
+          <p class="text-sm text-slate-600 dark:text-slate-400">A quick-reference table containing commonly used styles. Click on a row to copy the class instantly.</p>
+          
+          <!-- Cheat Sheet Table -->
+          <div class="overflow-x-auto border border-slate-200 dark:border-slate-800 rounded-2xl">
+            <table class="w-full text-xs text-left">
+              <thead class="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
+                <tr>
+                  <th class="p-3.5 font-semibold text-slate-600 dark:text-slate-400 dark:text-slate-400">Class Syntax</th>
+                  <th class="p-3.5 font-semibold text-slate-600 dark:text-slate-400 dark:text-slate-400">Property Category</th>
+                  <th class="p-3.5 font-semibold text-slate-600 dark:text-slate-400 dark:text-slate-400">Visual Effect / Description</th>
+                </tr>
+              </thead>
+              <tbody id="cheatSheetTableBody" class="divide-y divide-slate-200 dark:divide-slate-800">
+                <!-- Rows injected dynamically via Javascript for easy copy & search -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Global Success Modal Component Showcase Overlay -->
+  <div id="modalOverlay" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 max-w-md w-full rounded-3xl p-6 shadow-2xl space-y-4 transform scale-95 transition-transform duration-300">
+      <div class="flex items-center justify-between">
+        <h3 class="font-display font-bold text-lg flex items-center gap-2"><i class="fa-solid fa-circle-check text-green-500"></i> Success Notification</h3>
+        <button id="closeModalBtn" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+      <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+        This is a live interactive modal block styled using Tailwind CSS utility rules, and controlled via standard JavaScript event loops.
+      </p>
+      <div class="flex justify-end gap-2 pt-2">
+        <button id="modalActionBtn" class="px-4 py-2 bg-primary text-white text-xs font-semibold rounded-full hover:bg-primary-dark">Close Demo</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-slate-900 text-slate-400 py-16 px-6 text-center border-t border-slate-800 no-print mt-12">
+    <p class="text-xs">Tailwind CSS Complete Master Cheat Sheet &amp; Learning Roadmap &copy; 2026</p>
+    <p class="text-xs mt-2 text-slate-600 dark:text-slate-400">Created by <span class="text-primary font-bold">Deva Raj Bhojanapu</span></p>
+    <p class="text-[10px] opacity-50 mt-4 font-light">Built with HTML5, Tailwind CSS, and Space Grotesk typography. Self-contained single-page learning platform.</p>
+  </footer>
+
+  <!-- Floating Back to Top Button -->
+  <button id="backToTopBtn" class="fixed bottom-8 right-8 z-40 bg-primary hover:bg-primary-dark text-white w-12 h-12 rounded-full shadow-lg shadow-primary/20 hover:shadow-primary/30 flex items-center justify-center opacity-0 pointer-events-none hover:scale-105 transition-all no-print" aria-label="Scroll back to top">
+    <i class="fa-solid fa-arrow-up text-lg"></i>
+  </button>
+
+  <!-- Notification Toast -->
+  <div id="toastNotification" class="fixed bottom-8 left-8 z-50 bg-slate-900 text-white text-xs font-semibold px-4 py-3.5 rounded-xl shadow-xl border border-slate-800 flex items-center gap-2 transform translate-y-20 opacity-0 transition-all duration-300 no-print">
+    <i class="fa-solid fa-clipboard text-green-400"></i> <span id="toastText">Copied to clipboard!</span>
+  </div>
+
+  <!-- JavaScript Logics -->
+  <script>
+    // Cheat Sheet Data
+    const cheatSheetData = [
+      // Highlighted Mappings from User
+      { class: 'bg-*', category: 'Background', desc: 'Sets element background styles (e.g. bg-blue-500, bg-slate-100)' },
+      { class: 'text-*', category: 'Text color', desc: 'Controls typography color shades (e.g. text-red-500, text-white)' },
+      { class: 'px-*', category: 'Horizontal padding', desc: 'Sets padding spacing for both left and right sides (e.g. px-4 = 16px)' },
+      { class: 'py-*', category: 'Vertical padding', desc: 'Sets padding spacing for both top and bottom sides (e.g. py-2 = 8px)' },
+      { class: 'rounded-*', category: 'Border radius', desc: 'Rounds corner boundaries (e.g. rounded-lg = 8px, rounded-full)' },
+      { class: 'hover:*', category: 'Hover state', desc: 'Conditional interaction prefix modifier classes (e.g. hover:bg-blue-600)' },
+      { class: 'transition', category: 'Smooth animation', desc: 'Enables property shift interpolation transitions' },
+      { class: 'shadow-*', category: 'Shadow', desc: 'Applies visual box drop-shadow styling (e.g. shadow-md, shadow-xl)' },
+      { class: 'font-semibold', category: 'Font weight', desc: 'Sets typography font weight width to 600' },
+      
+      // Additional utilities
+      { class: 'flex', category: 'Display properties', desc: 'Turns the container into a flex container' },
+      { class: 'grid-cols-*', category: 'Grid system', desc: 'Defines count sizing parameters for layouts (e.g. grid-cols-3)' },
+      { class: 'm-*', category: 'Margin spacing', desc: 'Controls outer element spacing boundaries (e.g. m-4 = 16px)' },
+      { class: 'w-[*]', category: 'Arbitrary width', desc: 'Applies explicit inline widths using brackets (e.g. w-[380px])' },
+      { class: 'h-[*]', category: 'Arbitrary height', desc: 'Applies explicit inline heights using brackets (e.g. h-[calc(100vh-80px)])' }
+    ];
+
+    // Render Cheat Sheet Table
+    const tableBody = document.getElementById('cheatSheetTableBody');
+    function renderCheatSheet(data) {
+      tableBody.innerHTML = '';
+      data.forEach(item => {
+        const row = document.createElement('tr');
+        row.className = 'hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors duration-150 cursor-pointer';
+        row.innerHTML = `
+          <td class="p-3.5 font-mono text-primary font-bold hover:underline select-all">${item.class}</td>
+          <td class="p-3.5 font-semibold text-slate-600 dark:text-slate-400 capitalize">${item.category}</td>
+          <td class="p-3.5 text-slate-700 dark:text-slate-300 font-medium">${item.desc}</td>
+        `;
+        row.addEventListener('click', () => {
+          copyTextToClipboard(item.class);
+        });
+        tableBody.appendChild(row);
+      });
+    }
+    renderCheatSheet(cheatSheetData);
+
+    // Clipboard Copy Toast
+    const toast = document.getElementById('toastNotification');
+    const toastText = document.getElementById('toastText');
+    let toastTimeout;
+    
+    function showToast(message) {
+      toastText.textContent = message;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 2000);
+    }
+
+    function copyTextToClipboard(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        showToast(`Copied "${text}" to clipboard!`);
+      }).catch(err => {
+        console.error('Copy failure: ', err);
+      });
+    }
+
+    // Connect pre/code copy button clicks
+    function copyCode(btn) {
+      const wrapper = btn.closest('.code-wrapper');
+      let text = '';
+      const pre = wrapper.querySelector('pre');
+      const code = wrapper.querySelector('code');
+      
+      if (pre) text = pre.textContent.trim();
+      else if (code) text = code.textContent.trim();
+      
+      // Strip copy text prefix if present
+      if (text.startsWith('Copy')) {
+        text = text.substring(4).trim();
+      }
+
+      copyTextToClipboard(text);
+      
+      // Update UI state
+      btn.classList.add('copied');
+      btn.innerHTML = `<i class="fa-solid fa-check"></i> Copied!`;
+      setTimeout(() => {
+        btn.classList.remove('copied');
+        btn.innerHTML = `<i class="fa-solid fa-copy"></i> Copy`;
+      }, 2000);
+    }
+
+    // Toggle Dark Mode
+    const themeBtn = document.getElementById('themeToggleBtn');
+    if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    }
+    
+    themeBtn.addEventListener('click', () => {
+      if (document.documentElement.classList.contains('dark')) {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+      } else {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+      }
+    });
+
+    // Expand / Collapse Section details
+    document.querySelectorAll('.toggle-section-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const sec = btn.closest('.doc-section');
+        const content = sec.querySelector('.section-content');
+        const icon = btn.querySelector('i');
+        
+        if (content.classList.contains('hidden')) {
+          content.classList.remove('hidden');
+          icon.className = 'fa-solid fa-chevron-up text-lg';
+        } else {
+          content.classList.add('hidden');
+          icon.className = 'fa-solid fa-chevron-down text-lg';
+        }
+      });
+    });
+
+        // Real-time Search Filter logic
+    const searchInput = document.getElementById('searchInput');
+    searchInput.addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase().trim();
+
+      // Search Cheat Sheet
+      const filtered = cheatSheetData.filter(item => 
+        item.class.toLowerCase().includes(q) ||
+        item.category.toLowerCase().includes(q) ||
+        item.desc.toLowerCase().includes(q)
+      );
+      renderCheatSheet(filtered);
+
+      // Search Section contents
+      document.querySelectorAll('.doc-section').forEach(sec => {
+        const text = sec.textContent.toLowerCase();
+        if (text.includes(q)) {
+          sec.classList.remove('hidden');
+        } else {
+          sec.classList.add('hidden');
+        }
+      });
+    });
+
+    // Sidebar Mobile Menu interactions
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    
+    function toggleMobileMenu() {
+      sidebar.classList.toggle('-translate-x-full');
+      overlay.classList.toggle('hidden');
+    }
+    mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+    overlay.addEventListener('click', toggleMobileMenu);
+    sidebar.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        if (!sidebar.classList.contains('-translate-x-full')) {
+          toggleMobileMenu();
+        }
+      });
+    });
+
+    // Scroll Progress bar & back to top button toggles
+    const backToTopBtn = document.getElementById('backToTopBtn');
+    const scrollBar = document.getElementById('scrollProgress');
+    
+    window.addEventListener('scroll', () => {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      scrollBar.style.width = scrolled + '%';
+
+      if (winScroll > 450) {
+        backToTopBtn.classList.remove('opacity-0', 'pointer-events-none');
+        backToTopBtn.classList.add('opacity-100');
+      } else {
+        backToTopBtn.classList.remove('opacity-100');
+        backToTopBtn.classList.add('opacity-0', 'pointer-events-none');
+      }
+    });
+    
+    backToTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+        // Flexbox Sandbox alignment modifier controls
+    const flexSandbox = document.getElementById('flexSandbox');
+    const flexDir = document.getElementById('flexDirSelect');
+    const flexJustify = document.getElementById('flexJustifySelect');
+    const flexItems = document.getElementById('flexItemsSelect');
+    const flexGap = document.getElementById('flexGapSelect');
+    const flexClassDisplay = document.getElementById('flexGeneratedClasses');
+
+    function updateFlexSandbox() {
+      flexSandbox.className = 'flex w-full h-[150px] bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 rounded-xl p-4 transition-all duration-300';
+      const classes = `${flexDir.value} ${flexJustify.value} ${flexItems.value} ${flexGap.value}`;
+      flexSandbox.classList.add(...classes.split(' '));
+      flexClassDisplay.textContent = `<div class="flex ${classes}">...</div>`;
+    }
+    flexDir.addEventListener('change', updateFlexSandbox);
+    flexJustify.addEventListener('change', updateFlexSandbox);
+    flexItems.addEventListener('change', updateFlexSandbox);
+    flexGap.addEventListener('change', updateFlexSandbox);
+
+    // Positioning offsets alignments modifier controls
+    const posRuleSelect = document.getElementById('posRuleSelect');
+    const posElement = document.getElementById('posElement');
+    posRuleSelect.addEventListener('change', (e) => {
+      posElement.className = 'absolute bg-accent text-white p-3 rounded-xl shadow-md font-bold text-xs flex items-center gap-1.5 transition-all duration-300';
+      const coords = e.target.value.split(' ');
+      posElement.classList.add(...coords);
+    });
+
+    // Box Model hover explain texts updates
+    const bmMargin = document.getElementById('bmMargin');
+    const bmBorder = document.getElementById('bmBorder');
+    const bmPadding = document.getElementById('bmPadding');
+    const bmContent = document.getElementById('bmContent');
+    const explainBox = document.getElementById('boxModelExplanation');
+
+    bmMargin.addEventListener('mouseenter', () => explainBox.textContent = 'Margin (m-*): Visual spacing surrounding element borders.');
+    bmBorder.addEventListener('mouseenter', (e) => { e.stopPropagation(); explainBox.textContent = 'Border (border-*): Bounds separating outer margins and padding regions.'; });
+    bmPadding.addEventListener('mouseenter', (e) => { e.stopPropagation(); explainBox.textContent = 'Padding (p-*): Internal margins formatting box spaces.'; });
+    bmContent.addEventListener('mouseenter', (e) => { e.stopPropagation(); explainBox.textContent = 'Content: Child components rendering elements.'; });
+
+    // Components library Modal controls
+    const openModalBtn = document.getElementById('openModalBtn');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const modalAction = document.getElementById('modalActionBtn');
+    const modalOverlay = document.getElementById('modalOverlay');
+
+    function toggleModal() {
+      modalOverlay.classList.toggle('hidden');
+      modalOverlay.classList.toggle('flex');
+    }
+    openModalBtn.addEventListener('click', toggleModal);
+    closeModalBtn.addEventListener('click', toggleModal);
+    modalAction.addEventListener('click', toggleModal);
+
+    // Pricing toggle pricing card price changes
+    const pricingBtn = document.getElementById('pricingToggle');
+    const pricingKnob = document.getElementById('pricingToggleKnob');
+    const starterVal = document.getElementById('starterPriceVal');
+    const proVal = document.getElementById('proPriceVal');
+    let isYearly = false;
+
+    pricingBtn.addEventListener('click', () => {
+      isYearly = !isYearly;
+      if (isYearly) {
+        pricingKnob.classList.add('translate-x-6');
+        starterVal.textContent = '15';
+        proVal.textContent = '39';
+      } else {
+        pricingKnob.classList.remove('translate-x-6');
+        starterVal.textContent = '19';
+        proVal.textContent = '49';
+      }
+    });
+
+  </script>
+</body>
+</html>
